@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MateriaController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,6 +16,8 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::post('/materia', [MateriaController::class, 'store'])->name('materia.store');
+Route::get('/materia', [MateriaController::class, 'index'])->name('materia.index');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -24,6 +27,8 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
