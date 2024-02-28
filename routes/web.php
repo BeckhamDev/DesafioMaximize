@@ -16,8 +16,10 @@ use Inertia\Inertia;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::post('/materia', [MateriaController::class, 'store'])->name('materia.store');
 Route::get('/materia', [MateriaController::class, 'index'])->name('materia.index');
+Route::get('/materia/cadastro', [MateriaController::class, 'create'])->name('materia.create');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -40,4 +42,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
