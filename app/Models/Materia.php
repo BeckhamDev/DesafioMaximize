@@ -10,6 +10,7 @@ class Materia extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'user_id',
         'titulo',
         'texto_completo',
