@@ -6,7 +6,9 @@ use Inertia\Inertia;
 use App\Models\Materia;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\MateriaResource;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Redirect;
 
 
 class MateriaController extends Controller
@@ -16,7 +18,8 @@ class MateriaController extends Controller
      */
     public function index()
     {
-        //
+        $materias = MateriaResource::collection(Materia::orderBy('id', 'ASC')->get());
+        return Inertia::render('Dashboard', compact('materias'));
     }
 
     /**
@@ -24,7 +27,7 @@ class MateriaController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Materia/create');
+        return Inertia::render('Materia/Create');
     }
 
     /**
@@ -47,7 +50,7 @@ class MateriaController extends Controller
             ]
         );
 
-        if($request->hasFile('imagem')){
+        if ($request->hasFile('imagem')) {
             $imagem = $request->file('imagem')->store('img');
             Materia::create([
                 'titulo' => $request->titulo,
@@ -57,6 +60,8 @@ class MateriaController extends Controller
                 'imagem' => $imagem,
             ]);
         };
+
+        return Redirect::route('materia.index')->with('message', 'Pessoa cadastrada com sucesso!');
     }
 
     /**
@@ -88,7 +93,7 @@ class MateriaController extends Controller
             'descricao' => 'required|string|max:255',
             'imagem' => 'required|image',
         ]);
-        if($request->hasFile('imagem')) {
+        if ($request->hasFile('imagem')) {
             Storage::delete($materia->imagem);
             $imagem = $request->file('imagem')->store('img');
         }
