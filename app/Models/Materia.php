@@ -18,4 +18,9 @@ class Materia extends Model
         'imagem',
         'created_at',
     ];
+
+    public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

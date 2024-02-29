@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Materia;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MateriaResource;
@@ -18,10 +19,18 @@ class MateriaController extends Controller
      */
     public function index()
     {
-        $materias = MateriaResource::collection(Materia::orderBy('id', 'ASC')->get());
-        return Inertia::render('Dashboard', compact('materias'));
+
+        return Inertia::render('Dashboard');
     }
 
+    /**
+     * Display a listing all 'Materias'
+     */
+    public function GetMaterias()
+    {
+        $materias = Materia::with('user')->orderBy('materias.id', 'ASC')->paginate(2);
+        return $materias;
+    }
     /**
      * Show the form for creating a new resource.
      */
