@@ -17,9 +17,10 @@ use Inertia\Inertia;
 |
 */
 
-Route::post('/materia', [MateriaController::class, 'store'])->name('materia.store');
-Route::get('/materia', [MateriaController::class, 'index'])->name('materia.index');
-Route::get('/materia/cadastro', [MateriaController::class, 'create'])->name('materia.create');
+Route::post('/materia', [MateriaController::class, 'store'])->middleware(['auth', 'verified'])->name('materia.store');
+Route::get('/materia', [MateriaController::class, 'index'])->middleware(['auth', 'verified'])->name('materia.index');
+Route::get('/materia/cadastro', [MateriaController::class, 'create'])->middleware(['auth', 'verified'])->name('materia.create');
+Route::get('/materia/todas', [MateriaController::class, 'GetMaterias'])->middleware(['auth', 'verified'])->name('materia.create');
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -32,9 +33,7 @@ Route::get('/', function () {
 
 
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [MateriaController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
