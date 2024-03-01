@@ -31,6 +31,7 @@ class MateriaController extends Controller
         $materias = Materia::with('user')->orderBy('materias.id', 'ASC')->paginate(2);
         return $materias;
     }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -50,7 +51,7 @@ class MateriaController extends Controller
                 'user_id' => 'required',
                 'texto_completo' => 'required',
                 'descricao' => 'required|string|max:255',
-                'imagem' => 'required|image',
+                'imagem' => 'image',
             ],
             [
                 'required' => 'O campo :attribute é obrigatório!',
@@ -70,58 +71,69 @@ class MateriaController extends Controller
             ]);
         };
 
-        return Redirect::route('materia.index')->with('message', 'Pessoa cadastrada com sucesso!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return Redirect::route('materia.index')->with('message', 'Matéria cadastrada com sucesso!');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(String $id)
     {
-        //
+        $materia = MateriaResource::collection(Materia::where('id', '=', $id)->get());
+        return Inertia::render('Materia/Edit', compact('materia'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Materia $materia)
+    public function update(Request $request, String $id)
     {
-        $imagem = $materia->imagem;
+        $materia = Materia::find($id);
+
         $request->validate([
             'titulo' => 'required|string|max:255',
             'user_id' => 'required',
             'texto_completo' => 'required',
             'descricao' => 'required|string|max:255',
-            'imagem' => 'required|image',
         ]);
+
+
+        $imagem = $materia->imagem;
         if ($request->hasFile('imagem')) {
-            Storage::delete($materia->imagem);
+            Storage::delete($imagem);
             $imagem = $request->file('imagem')->store('img');
         }
 
-        Materia::create([
+        $materia->update([
             'titulo' => $request->titulo,
             'user_id' => $request->user_id,
             'texto_completo' => $request->texto_completo,
             'descricao' => $request->descricao,
             'imagem' => $imagem,
         ]);
+
+        return Redirect::route('materia.index')->with('message', 'Matéria atualizada com sucesso!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Materia $materia)
+    public function destroy(String $id)
     {
+        $materia = Materia::find($id);
+
         Storage::delete($materia->imagem);
         $materia->delete();
+        //return redirect()->back();
+
+        return Redirect::route('materia.index');
+
+        //return Inertia::render('Dashboard');
+
+    }
+
+    public function portal()
+    {
+        return Inertia::render('Web');
     }
 }
