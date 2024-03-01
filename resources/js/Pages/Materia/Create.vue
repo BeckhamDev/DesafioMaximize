@@ -119,7 +119,6 @@ const form = useForm({
     titulo: "",
     descricao: "",
     texto_completo: "",
-    descricao: "",
     imagem: null,
     user_id: attrs.auth.user.id,
 });
