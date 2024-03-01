@@ -24,13 +24,15 @@ class MateriaController extends Controller
     }
 
     /**
-     * Display a listing all 'Materias'
+     * Display a listing all 'Materias' with pagination
      */
     public function GetMaterias()
     {
         $materias = Materia::with('user')->orderBy('materias.id', 'ASC')->paginate(2);
         return $materias;
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -132,8 +134,22 @@ class MateriaController extends Controller
 
     }
 
+    /**
+     * Show the information about the specified resource
+     */
+    public function exibeMateria(String $id)
+    {
+        $materia = Materia::with('user')->find($id);
+        return Inertia::render('Materia', compact('materia'));
+    }
+
+
+    /**
+     * Render the web-portal with all the materias information
+     */
     public function portal()
     {
-        return Inertia::render('Web');
+        $materias = MateriaResource::collection(Materia::orderBy('materias.id', 'DESC')->get());
+        return Inertia::render('Web', compact('materias'));
     }
 }
