@@ -17,8 +17,39 @@ const getResults = (page = 1) => {
 onMounted(() => {
     getResults();
 });
+</script>
 
-console.log(materias);
+<script>
+import { router } from "@inertiajs/vue3";
+
+export default {
+    methods: {
+        showAlertConfirm(materia) {
+            this.$swal({
+                title: "Você tem certeza?",
+                text: "Tem certeza que deseja excluir!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Sim",
+                cancelButtonText: "Cancelar",
+            }).then((result) => {
+                if (result.value) {
+                    router.delete(`/materia/${materia}`, {
+                        _method: "delete",
+                    });
+
+                    this.$swal(
+                        "Excluído!",
+                        "Os dados foram excluídos.",
+                        "success"
+                    );
+                }
+            });
+        },
+    },
+};
 </script>
 
 <template>
@@ -38,7 +69,7 @@ console.log(materias);
                 <div class="flex justify-end m-2">
                     <div class="mr-4 flex">
                         <Link
-                            href="/materia/cadastro"
+                            href="/materia/create"
                             class="px-4 py-3 bg-indigo-500 hover:bg-indigo-700 text-white rounded-md"
                             >Cadastrar Matéria
                         </Link>
@@ -89,15 +120,26 @@ console.log(materias);
                                         <button
                                             class="text-sm bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
                                         >
-                                            <Link href="#">Editar</Link>
+                                            <Link
+                                                :href="
+                                                    route(
+                                                        'materia.edit',
+                                                        materia.id
+                                                    )
+                                                "
+                                                >Editar</Link
+                                            >
                                         </button>
                                     </td>
 
                                     <td class="pl-2 pr-4">
                                         <button
                                             class="text-sm bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded"
+                                            v-on:click="
+                                                showAlertConfirm(materia.id)
+                                            "
                                         >
-                                            <Link href="#">Excluir</Link>
+                                            <Link type="button">Excluir</Link>
                                         </button>
                                     </td>
                                 </tr>
