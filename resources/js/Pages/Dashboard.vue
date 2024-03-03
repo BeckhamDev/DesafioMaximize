@@ -5,6 +5,7 @@ import { Link } from "@inertiajs/vue3";
 import axios from "axios";
 import { TailwindPagination } from "laravel-vue-pagination";
 import { ref, onMounted } from "vue";
+import moment from "moment";
 
 const materias = ref({ data: {} });
 
@@ -113,7 +114,11 @@ export default {
                                     </td>
 
                                     <td class="px-4 py-3 text-sm">
-                                        {{ materia.created_at }}
+                                        {{
+                                            moment(materia.created_at).format(
+                                                "DD/MM/YYYY"
+                                            )
+                                        }}
                                     </td>
 
                                     <td class="pl-2 pr-4">

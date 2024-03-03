@@ -2,6 +2,10 @@
 import { Head, Link } from "@inertiajs/vue3";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import PortalLogo from "@/Components/PortalLogo.vue";
+
+defineProps({
+    materias: Object,
+});
 </script>
 
 <template>
@@ -34,65 +38,46 @@ import PortalLogo from "@/Components/PortalLogo.vue";
             </div>
         </div>
 
-        <div class="my-5">
+        <div class="my-5" v-for="materia in materias.data" :key="materia.id">
             <a
-                href="#"
+                :href="route('exibeMateria', materia.id)"
                 class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-6xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
             >
                 <img
+                    v-if="materia.imagem == null"
                     class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                    src="./imagem.jpg"
+                    src="./images.png"
                     alt=""
                 />
+
+                <img
+                    v-if="materia.imagem != null"
+                    class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
+                    :src="'http://[::1]:5173/storage/app/' + materia.imagem"
+                    alt=""
+                />
+
                 <div class="flex flex-col justify-between p-4 leading-normal">
                     <h5
                         class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
                     >
-                        A Porra do Lorax é investigado por participação em
-                        esquema de tráfico.
+                        {{ materia.titulo }}
                     </h5>
                     <p
                         class="mb-3 font-normal text-gray-700 dark:text-gray-400"
                     >
-                        Personagem mundialmente conhecido tem nome incluido na
-                        lista de principais suspeitos de chefiar quadrilha
-                        especializada em tráfico de anões venezuelanos.
+                        {{ materia.descricao }}
                     </p>
                 </div>
             </a>
         </div>
-        <a
-            href="#"
-            class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-6xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-        >
-            <img
-                class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg"
-                src="./dantas.jpg"
-                alt=""
-            />
-            <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5
-                    class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-                >
-                    Jovem é encontrado em estado de choque após descobrir que
-                    seu "Suporte de Placa de vídeo" é na verdade um pedaço de
-                    plástico qualquer.
-                </h5>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                    Seus familiares informaram que o mesmo pagou uma quantia
-                    exorbitante de dinheiro para comprar o suporte que foi
-                    importado da ásia.
-                </p>
-            </div>
-        </a>
     </main>
 
     <div class="pt-7">
         <footer
-            class="fixed bottom-0 left-0 z-20 w-full p-4 bg-white border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-custom-footter dark:border-gray-600"
+            class="bottom-0 left-0 z-20 w-full p-4 bg-custom-footter border-t border-gray-200 shadow md:flex md:items-center md:justify-between md:p-6"
         >
-            <span
-                class="text-sm text-gray-500 sm:text-center dark:text-white mx-auto"
+            <span class="text-sm sm:text-center text-white mx-auto"
                 >© 2023 Simetra - Laboratório Veterinário <br />
                 Todos os direitos reservados.
             </span>
