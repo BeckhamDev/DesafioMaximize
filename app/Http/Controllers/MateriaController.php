@@ -27,7 +27,7 @@ class MateriaController extends Controller
      */
     public function GetMaterias()
     {
-        $materias = Materia::with('user')->orderBy('materias.id', 'ASC')->paginate(10);
+        $materias = Materia::with('user')->orderBy('materias.id', 'DESC')->paginate(10);
         return $materias;
     }
 
