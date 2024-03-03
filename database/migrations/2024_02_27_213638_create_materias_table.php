@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('titulo');
-            $table->string('descricao');
-            $table->string('texto_completo');
-            $table->string('imagem');
+            $table->mediumText('descricao');
+            $table->longText('texto_completo');
+            $table->string('imagem')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
