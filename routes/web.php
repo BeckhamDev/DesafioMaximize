@@ -21,17 +21,9 @@ Route::get('/materia/todas', [MateriaController::class, 'GetMaterias'])->middlew
 Route::get('/dashboard', [MateriaController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::resource('/materia', MateriaController::class);
 Route::get('/web', [MateriaController::class, 'portal'])->name('web');
+Route::get('/exibeMateria/{id}', [MateriaController::class, 'exibeMateria'])->name('exibeMateria');
+Route::get('/', [MateriaController::class, 'portal']);
 
-
-
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
 
 
 Route::middleware('auth')->group(function () {
