@@ -34,6 +34,18 @@ Por fim, caso encontre o erro de Key com o artisan execute o comando:
 php artisan key:generate
 ```
 
+### Executando o Projeto
+
+Para executar o projeto é preciso que dois comandos sejam executados simultaneamente em dois terminais diferentes dentro do diretório do projeto:
+
+```
+php artisan serve
+```
+
+```
+npm run dev
+```
+
 ## 🛠️ Construído com
 
 O projeto foi construido usando 2 grandes frameworks como base e um banco de dados compatível, sendo eles:
@@ -129,7 +141,7 @@ Outro ponto seria a adição de um sistema de notificação de usuários a parti
 
 ## ✒️ Autor
 
--   **Guilherme** - _Trabalho Inicial_ - [umdesenvolvedor](https://github.com/BeckhamDev)
+-   **Guilherme Beckham** - [Github](https://github.com/BeckhamDev)
 
 ## 🎁 Agradecimentos
 
