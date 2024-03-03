@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Inertia\Inertia;
 use App\Models\Materia;
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\MateriaResource;
@@ -28,7 +27,7 @@ class MateriaController extends Controller
      */
     public function GetMaterias()
     {
-        $materias = Materia::with('user')->orderBy('materias.id', 'ASC')->paginate(2);
+        $materias = Materia::with('user')->orderBy('materias.id', 'ASC')->paginate(10);
         return $materias;
     }
 
@@ -53,25 +52,25 @@ class MateriaController extends Controller
                 'user_id' => 'required',
                 'texto_completo' => 'required',
                 'descricao' => 'required|string|max:255',
-                'imagem' => 'image',
             ],
             [
                 'required' => 'O campo :attribute é obrigatório!',
                 'max' => 'Limite de caracteres excedido!',
-                'imagem' => 'O arquivo inserido não é uma imagem!'
             ]
         );
 
+        $imagem = $request->imagem;
         if ($request->hasFile('imagem')) {
             $imagem = $request->file('imagem')->store('img');
-            Materia::create([
-                'titulo' => $request->titulo,
-                'user_id' => $request->user_id,
-                'texto_completo' => $request->texto_completo,
-                'descricao' => $request->descricao,
-                'imagem' => $imagem,
-            ]);
         };
+
+        Materia::create([
+            'titulo' => $request->titulo,
+            'user_id' => $request->user_id,
+            'texto_completo' => $request->texto_completo,
+            'descricao' => $request->descricao,
+            'imagem' => $imagem,
+        ]);
 
         return Redirect::route('materia.index')->with('message', 'Matéria cadastrada com sucesso!');
     }
@@ -123,15 +122,12 @@ class MateriaController extends Controller
     public function destroy(String $id)
     {
         $materia = Materia::find($id);
+        if($materia->imagem){
+            Storage::delete($materia->imagem);
+        }
 
-        Storage::delete($materia->imagem);
         $materia->delete();
-        //return redirect()->back();
-
         return Redirect::route('materia.index');
-
-        //return Inertia::render('Dashboard');
-
     }
 
     /**
